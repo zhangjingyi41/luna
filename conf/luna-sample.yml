@@ -1,0 +1,29 @@
+name: "luna"
+mode: "release"
+port: 8084
+version: "v0.0.1"
+start_time: "2025-04-01"
+
+auth:
+  jwt_expire: 3600
+
+log:
+  level: "info"
+  filename: "luna.log"
+  max_size: 200
+  max_age: 30
+  max_backups: 7
+mysql:
+  host: 主机地址
+  port: 数据库端口
+  user: "数据库用户名"
+  password: "数据库密码"
+  dbname: "数据库名"
+  max_open_conns: 200
+  max_idle_conns: 50
+redis:
+  host: 主机地址
+  port: 6379
+  password: "redis密码"
+  db: 0
+  pool_size: 100
