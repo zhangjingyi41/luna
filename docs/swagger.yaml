@@ -1,0 +1,66 @@
+basePath: /
+definitions:
+  models.Response:
+    properties:
+      code:
+        type: integer
+      data: {}
+      msg:
+        type: string
+    type: object
+host: localhost:8084
+info:
+  contact: {}
+  description: markdown博客系统
+  license:
+    name: MIT
+    url: https://github.com/zhangjingyi41/luna/blob/master/LICENSE
+  title: luna
+  version: 0.0.1
+paths:
+  /admin/login:
+    post:
+      consumes:
+      - application/json
+      description: 登录接口
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: 登录接口
+      tags:
+      - 后台管理
+  /admin/logout:
+    post:
+      consumes:
+      - application/json
+      description: 退出接口
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: 退出接口
+      tags:
+      - 后台管理
+  /health:
+    get:
+      consumes:
+      - application/json
+      description: 健康检查接口
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: 健康检查接口
+      tags:
+      - 公共接口
+swagger: "2.0"

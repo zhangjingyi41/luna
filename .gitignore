@@ -3,3 +3,4 @@ conf/luna.yml
 .vscode
 .idea
 go.sum
+logs/

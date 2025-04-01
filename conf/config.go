@@ -13,6 +13,7 @@ type AppConfig struct {
 	Port      int    `mapstructure:"port"`       // 端口号
 	Version   string `mapstructure:"version"`    // 版本号
 	StartTime string `mapstructure:"start_time"` // 启动时间
+	MachineId int64  `mapstructure:"machine_id"` // 机器ID
 
 	*LogConfig   `mapstructure:"log"`
 	*MysqlConfig `mapstructure:"mysql"`
@@ -54,6 +55,7 @@ type RedisConfig struct {
 var App = new(AppConfig)
 
 func InitConfig(filePath string) (err error) {
+	fmt.Println("配置文件加载中......")
 	viper.SetConfigFile(filePath)
 	err = viper.ReadInConfig()
 	if err != nil {
@@ -72,5 +74,6 @@ func InitConfig(filePath string) (err error) {
 			fmt.Printf("配置文件解析失败: %v\n", err)
 		}
 	})
+	fmt.Println("配置文件加载完成")
 	return nil
 }

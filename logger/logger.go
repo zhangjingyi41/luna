@@ -1,6 +1,7 @@
 package logger
 
 import (
+	"fmt"
 	"luna/conf"
 	"net"
 	"net/http"
@@ -19,6 +20,7 @@ import (
 var _log *zap.Logger
 
 func Init(c *conf.LogConfig, mode string) (err error) {
+	fmt.Println("日志初始化配置中......")
 	// 获取日志写入器
 	// lumberjack 可以帮助实现日志文件的分割和压缩
 	lumberjackLogger := &lumberjack.Logger{
@@ -56,7 +58,7 @@ func Init(c *conf.LogConfig, mode string) (err error) {
 	}
 	_log = zap.New(core, zap.AddCaller())
 	zap.ReplaceGlobals(_log)
-	zap.L().Info("日志初始化配置完成")
+	fmt.Println("日志初始化配置完成")
 	return nil
 }
 
@@ -66,7 +68,8 @@ func GinLogger() gin.HandlerFunc {
 		start := time.Now()
 		action := c.Request.URL.Path
 		query := c.Request.URL.RawQuery
-		c.Next()
+
+		c.Next() // 分界点，c.Next后的代码是在接口响应后执行
 
 		cost := time.Since(start)
 		_log.Info(
@@ -113,7 +116,7 @@ func GinRecovery(stack bool) gin.HandlerFunc {
 						zap.String("request", string(httpRequest)),
 					)
 					c.Error(err.(error))
-					c.Abort()
+					c.Abort() // 终止请求,后续的中间件将不会执行
 					return
 				}
 
