@@ -1,85 +1,68 @@
-<script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView />
+    <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" :ellipsis="false"
+        @select="handleSelect">
+        <el-menu-item index="0">
+            <el-icon><HomeFilled /></el-icon>
+        </el-menu-item>
+        <el-menu-item index="1" @click="handleLogin">登录</el-menu-item>
+    </el-menu>
 </template>
 
+<script lang="ts" setup>
+import { ref } from 'vue'
+import http from './utils/axios'
+import {generateRandomCode} from './utils/tools'
+
+const activeIndex = ref('0')
+
+// 处理登录按钮点击事件
+const handleLogin = async () => {
+    try {
+        // const response = await http.get('oauth2/oauthorization', {
+        //     params: {
+        //         client_id: '6FF9C917-3B38-7311-F146-4B617EF899BD',
+        //         redirect_uri: 'http://localhost:5174',
+        //         response_type: 'code',
+        //         scope: 'default',
+        //         state: generateRandomCode(16),
+        //     }
+        // })
+        // console.log('登录成功:', response.data)
+        // // 使用 response.data.data.target_url的地址，打开新的标签页
+        // if (response.data && response.data.data && response.data.data.target_url) {
+        //     const data = response.data.data
+        //     window.open(`${data.target_url}?client_id=${data.client_id}&redirect_uri=${data.redirect_uri}&response_type=${data.response_type}&scope=${data.scope}&state=${data.state}`, '_blank')
+        // } else {
+        //     console.error('未找到 target_url')
+        // }
+        const client_config = {
+            client_id: '6FF9C917-3B38-7311-F146-4B617EF899BD',
+            redirect_uri: 'http://localhost:5174',
+            response_type: 'code',
+            scope: 'default',
+            state: generateRandomCode(16),
+        }
+        window.open(`http://localhost:5173?client_id=${client_config.client_id}&redirect_uri=${client_config.redirect_uri}&response_type=${client_config.response_type}&scope=${client_config.scope}&state=${client_config.state}`)
+    } catch (error) {
+        console.error('登录失败:', error)
+    }
+}
+
+const handleSelect = (key: string, keyPath: string[]) => {
+    console.log(key, keyPath)
+}
+</script>
+
 <style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
+.el-menu--horizontal>.el-menu-item:nth-child(1) {
+    margin-right: auto;
+}
+/* 修改子菜单字体大小 */
+::v-deep(.el-sub-menu__title) {
+    font-size: 18px;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
+::v-deep(.el-menu-item) {
+    font-size: 18px;
 }
 </style>
